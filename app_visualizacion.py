@@ -171,7 +171,7 @@ with m1:
     <div style="background:#1E293B;border-radius:12px;padding:1rem 1.1rem;border-left:4px solid #60A5FA;text-align:center;">
         <p style="color:#94A3B8;font-size:0.8rem;margin:0;">👥 Estudiantes</p>
         <p style="color:#F8FAFC;font-size:1.6rem;font-weight:700;margin:0.2rem 0 0;">{n:,}</p>
-        <p style="color:#64748B;font-size:0.72rem;margin:0.2rem 0 0;">muestra filtrada</p>
+        <p style="color:#94A3B8;font-size:0.72rem;margin:0.2rem 0 0;">muestra filtrada</p>
     </div>""", unsafe_allow_html=True)
 with m2:
     color_nota = "#6EE7B7" if nota_prom >= 75 else "#FDE68A" if nota_prom >= 65 else "#FCA5A5"
@@ -179,7 +179,7 @@ with m2:
     <div style="background:#1E293B;border-radius:12px;padding:1rem 1.1rem;border-left:4px solid {color_nota};text-align:center;">
         <p style="color:#94A3B8;font-size:0.8rem;margin:0;">📝 Nota promedio</p>
         <p style="color:{color_nota};font-size:1.6rem;font-weight:700;margin:0.2rem 0 0;">{nota_prom:.1f}</p>
-        <p style="color:#64748B;font-size:0.72rem;margin:0.2rem 0 0;">sobre 100 pts</p>
+        <p style="color:#94A3B8;font-size:0.72rem;margin:0.2rem 0 0;">sobre 100 pts</p>
     </div>""", unsafe_allow_html=True)
 with m3:
     color_asist = "#6EE7B7" if asist_prom >= 80 else "#FDE68A" if asist_prom >= 65 else "#FCA5A5"
@@ -187,21 +187,21 @@ with m3:
     <div style="background:#1E293B;border-radius:12px;padding:1rem 1.1rem;border-left:4px solid {color_asist};text-align:center;">
         <p style="color:#94A3B8;font-size:0.8rem;margin:0;">📅 Asistencia media</p>
         <p style="color:{color_asist};font-size:1.6rem;font-weight:700;margin:0.2rem 0 0;">{asist_prom:.0f} %</p>
-        <p style="color:#64748B;font-size:0.72rem;margin:0.2rem 0 0;">promedio del grupo</p>
+        <p style="color:#94A3B8;font-size:0.72rem;margin:0.2rem 0 0;">promedio del grupo</p>
     </div>""", unsafe_allow_html=True)
 with m4:
     st.markdown(f"""
     <div style="background:#1E293B;border-radius:12px;padding:1rem 1.1rem;border-left:4px solid #F87171;text-align:center;">
         <p style="color:#94A3B8;font-size:0.8rem;margin:0;">🔴 Nivel Deficiente</p>
         <p style="color:#F87171;font-size:1.6rem;font-weight:700;margin:0.2rem 0 0;">{pct_deficiente:.1f} %</p>
-        <p style="color:#64748B;font-size:0.72rem;margin:0.2rem 0 0;">nota ≤ 64</p>
+        <p style="color:#94A3B8;font-size:0.72rem;margin:0.2rem 0 0;">nota ≤ 64</p>
     </div>""", unsafe_allow_html=True)
 with m5:
     st.markdown(f"""
     <div style="background:#1E293B;border-radius:12px;padding:1rem 1.1rem;border-left:4px solid #34D399;text-align:center;">
         <p style="color:#94A3B8;font-size:0.8rem;margin:0;">🟢 Nivel Superior</p>
         <p style="color:#34D399;font-size:1.6rem;font-weight:700;margin:0.2rem 0 0;">{pct_superior:.1f} %</p>
-        <p style="color:#64748B;font-size:0.72rem;margin:0.2rem 0 0;">nota ≥ 75</p>
+        <p style="color:#94A3B8;font-size:0.72rem;margin:0.2rem 0 0;">nota ≥ 75</p>
     </div>""", unsafe_allow_html=True)
 
 st.markdown("<div style='margin-top:0.5rem'></div>", unsafe_allow_html=True)
