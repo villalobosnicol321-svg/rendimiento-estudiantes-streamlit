@@ -134,7 +134,7 @@ st.markdown(
                 Panel de rendimiento estudiantil
             </h1>
         </div>
-        <p style="color:#94A3B8; margin:0; font-size:1rem; max-width:680px; line-height:1.5;">
+        <p style="color:#F8FAFC; margin:0; font-size:1rem; max-width:680px; line-height:1.5;">
             Explora cómo la asistencia, el esfuerzo y el contexto socioeducativo se relacionan
             con el desempeño académico. Usa los filtros de la barra lateral para segmentar la muestra.
         </p>
