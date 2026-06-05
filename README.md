@@ -30,39 +30,6 @@ rendimiento-estudiantes-streamlit/
     └── StudentPerformance.csv  # Dataset base
 ```
 
----
-
-## ⚙️ Requisitos
-
-```txt
-streamlit
-pandas
-numpy
-plotly
-scipy
-statsmodels
-```
-
-> **Python requerido: 3.11**
-
----
-
-## 🚀 Ejecución local
-
-### 1. Instalar dependencias
-
-```bash
-pip install streamlit pandas numpy plotly scipy statsmodels
-```
-
-### 2. Lanzar la app
-
-```bash
-streamlit run app_visualizacion.py
-```
-
----
-
 ## 🔍 Filtros disponibles
 
 Desde la barra lateral se puede segmentar la muestra por:
