@@ -1,33 +1,20 @@
-# 🎯 Predictor de Desempeño Académico
+# 📖 Panel de Rendimiento Estudiantil — Dashboard Exploratorio
 
-Aplicación de machine learning para estimar el nivel de rendimiento académico de un estudiante a partir de sus características de perfil, contexto y hábitos de estudio.
+Aplicación interactiva de visualización para explorar cómo la asistencia, el esfuerzo académico y el contexto socioeducativo se relacionan con el desempeño de los estudiantes.
 
 ---
 
 ## 📋 Descripción
 
-La app utiliza **6 modelos de clasificación multiclase** entrenados sobre el dataset `StudentPerformance.csv`. A partir de los datos ingresados, predice si el estudiante quedará en uno de tres niveles:
+El dashboard permite filtrar y analizar una población de estudiantes en tiempo real, segmentando por perfil, contexto escolar y hábitos de estudio. Todas las gráficas se actualizan automáticamente al modificar los filtros de la barra lateral.
+
+Los niveles de desempeño se definen así:
 
 | Nivel | Rango de nota | Indicador |
 |---|---|---|
-| 🔴 Deficiente | ≤ 64 | Requiere plan de refuerzo |
+| 🔴 Deficiente | ≤ 64 | Requiere atención prioritaria |
 | 🟠 Básico | 65 – 74 | Rendimiento intermedio |
-| 🟢 Superior | ≥ 75 | Buen desempeño proyectado |
-
----
-
-## 🧠 Modelos incluidos
-
-| Modelo | Clave interna | Archivo |
-|---|---|---|
-| Gradient Boosting ⭐ | `gb` | `modelo_gradient_boosting.pkl` |
-| Logistic Regression | `rl` | `modelo_regresion_logistica.pkl` |
-| Logistic Regression + SMOTE | `rl_smote` | `modelo_rl_smote.pkl` |
-| Random Forest | `rf` | `modelo_random_forest.pkl` |
-| Decision Tree | `tree` | `modelo_arbol.pkl` |
-| PCA + K-Means | `pca_km` | `modelo_pca_kmeans.pkl` |
-
-> ⭐ El modelo recomendado es **Potenciación de gradiente**, por obtener el mejor F1-macro en datos de prueba.
+| 🟢 Superior | ≥ 75 | Buen desempeño académico |
 
 ---
 
@@ -36,22 +23,11 @@ La app utiliza **6 modelos de clasificación multiclase** entrenados sobre el da
 ```
 rendimiento-estudiantes-streamlit/
 │
-├── app_ml.py                   # App de predicción (este módulo)
-├── entrenamiento.py            # Script para re-entrenar los modelos
-├── pca_kmeans_classifier.py    # Clasificador personalizado PCA + K-Means
+├── app_visualizacion.py        # App del dashboard (este módulo)
 ├── ui_tema.py                  # Componentes visuales y tema compartido
 │
-├── data/
-│   └── StudentPerformance.csv  # Dataset de entrenamiento
-│
-└── models/
-    ├── modelo_gradient_boosting.pkl
-    ├── modelo_regresion_logistica.pkl
-    ├── modelo_rl_smote.pkl
-    ├── modelo_random_forest.pkl
-    ├── modelo_arbol.pkl
-    ├── modelo_pca_kmeans.pkl
-    └── metadata.pkl            # Métricas, columnas y opciones del formulario
+└── data/
+    └── StudentPerformance.csv  # Dataset base
 ```
 
 ---
@@ -62,16 +38,12 @@ rendimiento-estudiantes-streamlit/
 streamlit
 pandas
 numpy
-scikit-learn==1.5.2
 plotly
-joblib
-imbalanced-learn==0.12.4
 scipy
 statsmodels
 ```
 
-> **Python requerido: 3.11**  
-> El archivo `.python-version` en la raíz del repositorio ya especifica esta versión para Streamlit Cloud.
+> **Python requerido: 3.11**
 
 ---
 
@@ -80,209 +52,79 @@ statsmodels
 ### 1. Instalar dependencias
 
 ```bash
-pip install scikit-learn==1.5.2 imbalanced-learn==0.12.4 streamlit pandas numpy plotly joblib scipy statsmodels
+pip install streamlit pandas numpy plotly scipy statsmodels
 ```
 
-### 2. Entrenar los modelos (solo la primera vez o si cambia el dataset)
+### 2. Lanzar la app
 
 ```bash
-python entrenamiento.py
-```
-
-Esto genera todos los archivos `.pkl` en la carpeta `models/`.
-
-### 3. Lanzar la app
-
-```bash
-streamlit run app_ml.py
+streamlit run app_visualizacion.py
 ```
 
 ---
 
-## 🔄 Re-entrenamiento
+## 🔍 Filtros disponibles
 
-Si necesitas actualizar los modelos (nuevo dataset o cambio de parámetros):
+Desde la barra lateral se puede segmentar la muestra por:
 
-```bash
-python entrenamiento.py
-git add models/
-git commit -m "Actualizar modelos entrenados"
-git push
-```
-
-> ⚠️ Los archivos `.pkl` deben generarse con **las mismas versiones** de `scikit-learn` e `imbalanced-learn` que usa Streamlit Cloud (`sklearn==1.5.2`, `imblearn==0.12.4`), de lo contrario la app fallará al cargarlos.
-
----
-
-## 📊 Variables de entrada
-
-El formulario solicita las siguientes variables del estudiante:
-
-**Indicadores numéricos**
-- Horas de estudio semanales
-- Porcentaje de asistencia
-- Notas anteriores
-- Horas de actividades extracurriculares
-- Horas de sueño por día
-
-**Perfil y contexto**
-- Género
+**👤 Perfil**
+- Género (Femenino / Masculino)
 - Nivel de motivación (Bajo / Medio / Alto)
+
+**🏫 Contexto escolar**
 - Acceso a internet (Sí / No)
 - Tipo de colegio (Público / Privado)
-- Apoyo familiar (Bajo / Medio / Alto)
+
+**📐 Esfuerzo académico**
+- Rango de horas de estudio semanales
+- Rango de porcentaje de asistencia
 
 ---
 
-## 📈 Interpretación de resultados
+## 📊 Secciones del análisis
 
-- La app muestra la predicción de los **6 modelos simultáneamente** para comparar.
-- El modelo seleccionado en la barra lateral ofrece detalle completo: nivel estimado, confianza (probabilidad) y gráfico de probabilidades por clase.
-- Los modelos basados en árboles (Random Forest, Gradient Boosting, Árbol de decisión) incluyen además un gráfico de **importancia de variables**.
+La app está organizada en 4 secciones navegables:
 
----
+### 1. 📊 Panorama general
+Visión global de la muestra filtrada.
 
-# 🎯 Predictor de Desempeño Académico
+| Gráfica | Descripción |
+|---|---|
+| Histograma de notas | Distribución de los puntajes del examen final |
+| Estudiantes por nivel | Conteo por categoría: Deficiente, Básico, Superior |
 
-Aplicación de machine learning para estimar el nivel de rendimiento académico de un estudiante a partir de sus características de perfil, contexto y hábitos de estudio.
+### 2. 🏷️ Perfil por factores
+Comparación de notas según variables de contexto, usando diagramas de caja (box plots).
 
----
+| Gráfica | Variable comparada |
+|---|---|
+| Nota según motivación | Bajo / Medio / Alto |
+| Nota según tipo de colegio | Público / Privado |
+| Nota según acceso a internet | Sí / No |
 
-## 📋 Descripción
+### 3. 🔗 Relaciones clave
+Diagramas de dispersión con líneas de tendencia (OLS) para identificar correlaciones.
 
-La app utiliza **6 modelos de clasificación multiclase** entrenados sobre el dataset `StudentPerformance.csv`. A partir de los datos ingresados, predice si el estudiante quedará en uno de tres niveles:
+| Gráfica | Ejes |
+|---|---|
+| Horas de estudio vs. nota | X: horas · Y: nota · Tamaño: asistencia |
+| Asistencia vs. nota | X: asistencia % · Y: nota |
+| Notas anteriores vs. nota | X: historial · Y: nota actual |
 
-| Nivel | Rango de nota | Indicador |
-|---|---|---|
-| 🔴 Deficiente | ≤ 64 | Requiere plan de refuerzo |
-| 🟠 Básico | 65 – 74 | Rendimiento intermedio |
-| 🟢 Superior | ≥ 75 | Buen desempeño proyectado |
-
----
-
-## 🧠 Modelos incluidos
-
-| Modelo | Clave interna | Archivo |
-|---|---|---|
-| Gradient Boosting ⭐ | `gb` | `modelo_gradient_boosting.pkl` |
-| Logistic Regression | `rl` | `modelo_regresion_logistica.pkl` |
-| Logistic Regression + SMOTE | `rl_smote` | `modelo_rl_smote.pkl` |
-| Random Forest | `rf` | `modelo_random_forest.pkl` |
-| Decision Tree | `tree` | `modelo_arbol.pkl` |
-| PCA + K-Means | `pca_km` | `modelo_pca_kmeans.pkl` |
-
-> ⭐ El modelo recomendado es **Potenciación de gradiente**, por obtener el mejor F1-macro en datos de prueba.
+### 4. 📋 Tabla de datos
+Registros individuales de la muestra filtrada con opción de descarga en CSV.
 
 ---
 
-## 📁 Estructura de archivos
+## 📈 Métricas del encabezado
 
-```
-rendimiento-estudiantes-streamlit/
-│
-├── app_ml.py                   # App de predicción (este módulo)
-├── entrenamiento.py            # Script para re-entrenar los modelos
-├── pca_kmeans_classifier.py    # Clasificador personalizado PCA + K-Means
-├── ui_tema.py                  # Componentes visuales y tema compartido
-│
-├── data/
-│   └── StudentPerformance.csv  # Dataset de entrenamiento
-│
-└── models/
-    ├── modelo_gradient_boosting.pkl
-    ├── modelo_regresion_logistica.pkl
-    ├── modelo_rl_smote.pkl
-    ├── modelo_random_forest.pkl
-    ├── modelo_arbol.pkl
-    ├── modelo_pca_kmeans.pkl
-    └── metadata.pkl            # Métricas, columnas y opciones del formulario
-```
+Al inicio de la app se muestran 5 KPIs que se actualizan con cada cambio de filtro:
 
----
-
-## ⚙️ Requisitos
-
-```txt
-streamlit
-pandas
-numpy
-scikit-learn==1.5.2
-plotly
-joblib
-imbalanced-learn==0.12.4
-scipy
-statsmodels
-```
-
-> **Python requerido: 3.11**  
-> El archivo `.python-version` en la raíz del repositorio ya especifica esta versión para Streamlit Cloud.
-
----
-
-## 🚀 Ejecución local
-
-### 1. Instalar dependencias
-
-```bash
-pip install scikit-learn==1.5.2 imbalanced-learn==0.12.4 streamlit pandas numpy plotly joblib scipy statsmodels
-```
-
-### 2. Entrenar los modelos (solo la primera vez o si cambia el dataset)
-
-```bash
-python entrenamiento.py
-```
-
-Esto genera todos los archivos `.pkl` en la carpeta `models/`.
-
-### 3. Lanzar la app
-
-```bash
-streamlit run app_ml.py
-```
-
----
-
-## 🔄 Re-entrenamiento
-
-Si necesitas actualizar los modelos (nuevo dataset o cambio de parámetros):
-
-```bash
-python entrenamiento.py
-git add models/
-git commit -m "Actualizar modelos entrenados"
-git push
-```
-
-> ⚠️ Los archivos `.pkl` deben generarse con **las mismas versiones** de `scikit-learn` e `imbalanced-learn` que usa Streamlit Cloud (`sklearn==1.5.2`, `imblearn==0.12.4`), de lo contrario la app fallará al cargarlos.
-
----
-
-## 📊 Variables de entrada
-
-El formulario solicita las siguientes variables del estudiante:
-
-**Indicadores numéricos**
-- Horas de estudio semanales
-- Porcentaje de asistencia
-- Notas anteriores
-- Horas de actividades extracurriculares
-- Horas de sueño por día
-
-**Perfil y contexto**
-- Género
-- Nivel de motivación (Bajo / Medio / Alto)
-- Acceso a internet (Sí / No)
-- Tipo de colegio (Público / Privado)
-- Apoyo familiar (Bajo / Medio / Alto)
-
----
-
-## 📈 Interpretación de resultados
-
-- La app muestra la predicción de los **6 modelos simultáneamente** para comparar.
-- El modelo seleccionado en la barra lateral ofrece detalle completo: nivel estimado, confianza (probabilidad) y gráfico de probabilidades por clase.
-- Los modelos basados en árboles (Random Forest, Gradient Boosting, Árbol de decisión) incluyen además un gráfico de **importancia de variables**.
+- **Estudiantes** — total de la muestra activa
+- **Nota promedio** — media del examen en la muestra
+- **Asistencia media** — promedio del porcentaje de asistencia
+- **% Deficiente** — proporción de estudiantes con nota ≤ 64
+- **% Superior** — proporción de estudiantes con nota ≥ 75
 
 ---
 
